@@ -1,4 +1,4 @@
-const logger = (store) => (next) => (action) {
+const logger = (store) => (next) => (action) => {
   // logger will show us anytime that new action is dispatched
   // and what the new state is going to be after dispatch
   // this will be groupt together inside the console
