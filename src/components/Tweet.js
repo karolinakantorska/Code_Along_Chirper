@@ -1,8 +1,19 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { formatTweet } from '../utils/helpers'
+import { formatTweet, formatDate } from '../utils/helpers'
+import { TiArrowBackOutline } from 'react-icons/ti/index'
+import { TiHeartOutline } from 'react-icons/ti/index'
+import { TiHeartFullOutline } from 'react-icons/ti/index'
 
 class Tweet extends Component {
+  handleLike = (e) => {
+    e.preventDefault()
+    // TODO handle like tweet
+  }
+  toParent = (e, id) => {
+    e.preventDefault()
+    // TODO redirect to parent tweet
+  }
   render() {
     const { tweet } = this.props
 
@@ -10,34 +21,51 @@ class Tweet extends Component {
       return <p>This tweet does not exist</p>
     }
 
-    console.log(this.props)
-
+    const {name,avatar, timestamp, text, hasLiked, likes, replies, parent } = tweet
     return (
       <div className= 'tweet'>
-
-      </div>
+        <img
+          src= {avatar}
+          alt={`Avatar of ${name}`}
+          className= 'avatar'
+        />
+        <div className= 'tweet-info'>
+          <div>
+            <span>{name}</span>
+            <div>{formatDate(timestamp)}</div>
+            {parent && (
+              <button className= 'replying-to' onClick={(e) => this.toParent(e, parent.id)}>
+                Replying to @{parent.author}
+              </button>
+            )}
+            <p>{text}</p>
+          </div>
+          <div className='tweet-icons'>
+            <TiArrowBackOutline className='tweet-icon' />
+            <span>{replies !== 0 && replies}</span>
+            <button className='heart-button' onClick={this.handleLike}>
+              {hasLiked === true
+                    ? <TiHeartFullOutline color='#e0245e' className='tweet-icon' />
+                    : <TiHeartOutline className='tweet-icon'/>}
+            </button>
+            <span>{likes !== 0 && likes}</span>
+          </div>
+        </div>
+    </div>
     )
   }
 }
-// what state does this Component actually need from our redux store? this is going to be passed as a first argument
-// state from redux store to Tweet component (firs argument)
-// with mapStateToProps if you pass a prop to the component that you are rendering. That it is going to come here as the secund argument
-// the props passed to the Tweet component (secund argument)
 
-function mapStateToProps({ authedUser, users, tweets}, { id }) {
+
+function mapStateToProps ({authedUser, users, tweets}, { id }) {
   const tweet = tweets[id]
-  // information about parent tweet
-  // if a tweet has a property replayingTo
-  // null if the tweet does not exist
+
   const parentTweet = tweet ? tweets[tweet.replayingTo] : null
 
   return {
-    // We're destructuring both arguments. From the store, we're extracting:
-    // he authedUser data
-    // the users data
-    // the tweets data
+
     authedUser,
-    // null if the tweet does not exist
+
     tweet: tweet
       ? formatTweet(tweet, users[tweet.author], authedUser, parentTweet)
       : null
