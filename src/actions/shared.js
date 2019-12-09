@@ -3,6 +3,7 @@ import { getInitialData } from '../utils/api'
 import { receiveUsers } from '../actions/users'
 import { receiveTweets } from '../actions/tweets'
 import { setAuthedUser } from '../actions/authedUser'
+import { showLoading, hideLoading } from 'react-redux-loading'
 
 const AUTHED_ID = 'tylermcginnis'
 
@@ -11,6 +12,7 @@ export function handleInitialData () {
   // Redux return pattern
   // asynchronious request inside this function
   return (dispatch) => {
+    dispatch(showLoading())
     // calling get initial data
     return getInitialData()
       // that will then return us a promisse
@@ -20,6 +22,7 @@ export function handleInitialData () {
         dispatch(receiveUsers(users))
         dispatch(receiveTweets(tweets))
         dispatch(setAuthedUser(AUTHED_ID))
+        dispatch(hideLoading())
       })
   }
 }
