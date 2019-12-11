@@ -16,18 +16,18 @@ class App extends Component {
   render() {
     return (
       <Router>
-        // instead of giveing a div here, fragment does not add any element to the dom
+
         <Fragment>
           <LoadingBar/>
             <div className= 'container'>
             <Nav />
-            // if this.props.loading is true we render null
+
             {this.props.loading === true
               ? null
               : <div>
-                  <Route patch= '/' exact component= {Dashboard} />
-                  <Route patch= '/tweet/:id' component= {TweetPage} />
-                  <Route patch= '/new' component= {NewTweet} />
+                  <Route path= '/' exact component= {Dashboard} />
+                  <Route path= '/tweet/:id' component= {TweetPage} />
+                  <Route path='/new' component={NewTweet} />
 
                 </div>}
             // if this.props.loading is false we render Dashboard component
