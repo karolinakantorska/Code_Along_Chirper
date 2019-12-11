@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { handleAddTweet } from '../actions/tweets'
+import { Redirect } from 'react-router-dom'
 
 // that will be a controled component
 // using react component state
@@ -8,6 +9,7 @@ import { handleAddTweet } from '../actions/tweets'
 class NewTweet extends Component {
   state = {
       text:'',
+      toHome: false
   }
   handleChange = (textFeld) => {
    const text = textFeld.target.value
@@ -29,13 +31,18 @@ class NewTweet extends Component {
    //console.log('New Tweet: ', text)
    // reset a text fielt to empty string
    this.setState(() => ({
-     text: ''
+     text: '',
+     toHome: id ? false : true
    }))
  }
 
   render() {
-    const { text } = this.state
-     {/* todo: Redirect to / if submitted */}
+    const { text, toHome } = this.state
+
+    if (toHome === true) {
+      return <Redirect to = '/' />
+    }
+
     const tweetLeft = 280 - text.length
 
     return(
